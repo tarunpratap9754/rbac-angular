@@ -1,0 +1,226 @@
+
+<div class="container" style="max-width: 60vw">
+
+  <form #frm="ngForm" (ngSubmit)="addUser(frm)" *ngIf="!toggleForm" autocomplete="off">
+    <br>
+    <h2 class="page-header">New User</h2>
+
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" name="firstname" class="form-control" [ngClass]="{
+        'is-invalid': frm.controls.firstname?.invalid && (frm.controls.firstname?.dirty || frm.controls.firstname?.touched),
+        'is-valid': frm.controls.firstname?.valid && (frm.controls.firstname?.dirty || frm.controls.firstname?.touched)
+   }" placeholder="Tester" pattern="[^\s]+" ngModel required>
+
+      <div class="form-control-feedback invalid-feedback" *ngIf="frm.controls.firstname?.errors && (frm.controls.firstname?.dirty || frm.controls.firstname?.touched)">
+        <small *ngIf="frm.controls.firstname?.errors.required">Required field.</small>
+        <small *ngIf="frm.controls.firstname?.errors.pattern">Spaces not allowed.</small>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" name="lastname" class="form-control" [ngClass]="{
+        'is-invalid': frm.controls.lastname?.invalid && (frm.controls.lastname?.dirty || frm.controls.lastname?.touched),
+        'is-valid': frm.controls.lastname?.valid && (frm.controls.lastname?.dirty || frm.controls.lastname?.touched)
+   }" placeholder="Testerson" pattern="[^\s]+" ngModel required>
+
+      <div class="form-control-feedback invalid-feedback" *ngIf="frm.controls.lastname?.errors && (frm.controls.lastname?.dirty || frm.controls.lastname?.touched)">
+        <small *ngIf="frm.controls.lastname?.errors.required">Required field.</small>
+        <small *ngIf="frm.controls.lastname?.errors.pattern">Spaces not allowed.</small>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" name="email" class="form-control" [ngClass]="{
+        'is-invalid': frm.controls.email?.invalid && (frm.controls.email?.dirty || frm.controls.email?.touched),
+        'is-valid': frm.controls.email?.valid && (frm.controls.email?.dirty || frm.controls.email?.touched)
+   }" placeholder="Tester@testerson.com" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+" ngModel>
+
+      <div class="form-control-feedback invalid-feedback" *ngIf="frm.controls.email?.errors && (frm.controls.email?.dirty || frm.controls.email?.touched)">
+        <small *ngIf="frm.controls.email?.errors.required">Required field.</small>
+        <small *ngIf="frm.controls.email?.errors.pattern">Please enter in the example format.</small>
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <label>Role</label>
+      <select class="form-control" name="role" ngModel>
+        <option [ngValue]="Role" selected disabled hidden>Role</option>
+        <option *ngFor="let role of roles">
+          {{role.Description}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Country</label>
+      <select class="form-control" name="country" [(ngModel)]="cName" (click)=getStates()>
+        <option [ngValue]="Country" selected disabled hidden>Country</option>
+        <option *ngFor="let country of countries">
+          {{country.CountryName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>State</label>
+      <select class="form-control" name="state" [(ngModel)]="sName" (click)=getCities() [disabled]="sDisabled">
+        <option [ngValue]="State" selected disabled hidden>State</option>
+        <option *ngFor="let state of states">
+          {{state.StateName}}
+        </option>
+
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>City</label>
+      <select class="form-control" name="city" [(ngModel)]="city" [disabled]="cDisabled">
+        <option [ngValue]="City" selected disabled hidden>City</option>
+        <option *ngFor="let city of cities">
+          {{city.Cities}}
+        </option>
+
+      </select>
+    </div>
+
+    <hr>
+
+    <button class="btn btn-outline-dark" type="submit" [disabled]=frm.invalid>Add</button>
+  </form>
+
+  <form #editfrm="ngForm" (ngSubmit)="editUser(editfrm)" *ngIf="toggleForm" autocomplete="off">
+    <br>
+    <h2 class="page-header">{{editfrm.value.firstname}} {{editfrm.value.lastname}}</h2>
+
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" name="firstname" class="form-control" [ngModel]="selectedUser.firstname" [ngClass]="{
+        'is-invalid': editfrm.controls.firstname?.invalid && (editfrm.controls.firstname?.dirty || editfrm.controls.firstname?.touched),
+        'is-valid': editfrm.controls.firstname?.valid && (editfrm.controls.firstname?.dirty || editfrm.controls.firstname?.touched)
+   }" required pattern="[^\s]+">
+
+      <div class="form-control-feedback invalid-feedback" *ngIf="editfrm.controls.firstname?.errors && (editfrm.controls.firstname?.dirty || editfrm.controls.firstname?.touched)">
+        <small *ngIf="editfrm.controls.firstname?.errors.required">Required field.</small>
+        <small *ngIf="editfrm.controls.firstname?.errors.pattern">Spaces not allowed.</small>
+      </div>
+
+    </div>
+
+
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" name="lastname" class="form-control" [ngModel]="selectedUser.lastname" [ngClass]="{
+        'is-invalid': editfrm.controls.lastname?.invalid && (editfrm.controls.lastname?.dirty || editfrm.controls.lastname?.touched),
+        'is-valid': editfrm.controls.lastname?.valid && (editfrm.controls.lastname?.dirty || editfrm.controls.lastname?.touched)
+   }" pattern="[^\s]+" required>
+
+      <div class="form-control-feedback invalid-feedback" *ngIf="editfrm.controls.lastname?.errors && (editfrm.controls.lastname?.dirty || editfrm.controls.lastname?.touched)">
+        <small *ngIf="editfrm.controls.lastname?.errors.required">Required field.</small>
+        <small *ngIf="editfrm.controls.lastname?.errors.pattern">Spaces not allowed.</small>
+      </div>
+
+    </div>
+
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" name="email" class="form-control" [ngModel]="selectedUser.email" [ngClass]="{
+        'is-invalid': editfrm.controls.email?.invalid && (editfrm.controls.email?.dirty || editfrm.controls.email?.touched),
+        'is-valid': editfrm.controls.email?.valid && (editfrm.controls.email?.dirty || editfrm.controls.email?.touched)
+   }" required pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
+
+      <div class="form-control-feedback invalid-feedback" *ngIf="editfrm.controls.email?.errors && (editfrm.controls.email?.dirty || editfrm.controls.email?.touched)">
+        <small *ngIf="editfrm.controls.email?.errors.required">Required field.</small>
+        <small *ngIf="editfrm.controls.email?.errors.pattern">Please enter in the example format.</small>
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <label>Role</label>
+      <select class="form-control" name="role" [(ngModel)]="roleDesc">
+        <option *ngFor="let role of roles">
+          {{role.Description}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Country</label>
+      <select class="form-control" name="country" [(ngModel)]="cName" (click)=getStates()>
+        <option *ngFor="let country of countries">
+          {{country.CountryName}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>State</label>
+      <select class="form-control" name="state" [(ngModel)]="sName" (click)=getCities()>
+        <option *ngFor="let state of states" [selected]="state.StateName === selectedUser.state">
+          {{state.StateName}}
+        </option>
+
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>City</label>
+      <select class="form-control" name="city" [ngModel]="selectedUser.city">
+        <option *ngFor="let city of cities" [selected]="city.Cities === selectedUser.city">
+          {{city.Cities}}
+        </option>
+
+      </select>
+    </div>
+
+    <hr>
+
+    <button class="btn btn-outline-dark" type="submit" [disabled]=editfrm.invalid>Save</button>
+  </form>
+
+</div>
+
+<hr>
+<br>
+
+<div class="container" style="max-width: 60vw;">
+  <div class="row" style="text-align:center">
+    <div class="col-md-2">
+      <h3>Name</h3>
+    </div>
+    <div class="col-md-2">
+      <h3>Email</h3>
+    </div>
+    <div class="col-md-4">
+      <h3>Location</h3>
+    </div>
+  </div>
+  <hr>
+  <br>
+  <div *ngFor="let user of users" class="row" style="margin-bottom:10px; text-align:center">
+    <div class="col-md-2">
+      <h6 (click)="((user === this.selectedUser && this.toggleForm) || !this.toggleForm)?updateUser(user):false" style="cursor: pointer;">{{user.firstname}} {{user.lastname}}</h6>
+    </div>
+    <div class="col-md-2">
+      <h6>{{user.email}}</h6>
+    </div>
+    <div class="col-md-4">
+      <h6>{{user.city}}{{(user.city)?",":""}}{{user.state}}{{(user.state)?",":""}}{{user.country}}</h6>
+    </div>
+    <div class="col-md-2">
+      <button (click)=updateUser(user) [ngClass]="(!this.toggleForm)?'btn btn-outline-success btn-sm':'btn btn-outline-secondary btn-sm'"
+        *ngIf="(user === this.selectedUser && this.toggleForm) || !this.toggleForm">
+        {{(!this.toggleForm)?'Update':'Return'}}</button>
+    </div>
+    <div class="col-md-2">
+      <input type="button" (click)=deleteUser(user,user._id) value="Delete" class="btn btn-outline-danger btn-sm">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="container" style="max-width: 50vw">
+  <form [formGroup]="form" (ngSubmit)="addRole(frm)" autocomplete="off">
+    <br>
+    <h2 class="page-header" style="word-break: break-all; word-wrap: break-word;">{{(form.value.rolename)?form.value.rolename:"New Role"}} </h2>
+    <br>
+    <div class="form-group">
+      <label for="rolename">
+        <h4>Role Name</h4>
+      </label>
+      <input type="text" formControlName="rolename" class="form-control form-control-lg" [ngClass]="{
+        'is-invalid': form.controls['rolename'].invalid && (form.controls['rolename'].dirty || form.controls['rolename'].touched),
+        'is-valid': form.controls['rolename'].valid && (form.controls['rolename'].dirty || form.controls['rolename'].touched)
+      }" placeholder="Client">
+      <div class="form-control-feedback invalid-feedback d-block" *ngIf="form.controls['rolename'].touched && form.controls['rolename'].invalid">
+        <small *ngIf="form.controls['rolename'].hasError('required')">Required Field.</small>
+        <small *ngIf="form.controls['rolename'].hasError('minlength')">
+          Role Name should be atleast 6 charcaters long.</small>
+        <small *ngIf="form.controls['rolename'].hasError('maxlength')">
+          Role Name cannot exceed 50 charcaters.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">
+        <h4>Description</h4>
+      </label>
+      <textarea rows="2" cols="50" formControlName="description" id="description" type="text" class="form-control" [ngClass]="{
+        'is-invalid': form.controls['description'].invalid && (form.controls['description'].dirty || form.controls['description'].touched),
+        'is-valid': form.controls['description'].valid && (form.controls['description'].dirty || form.controls['description'].touched)
+      }" #description>
+    </textarea>
+      <div class="form-control-feedback invalid-feedback d-block" *ngIf="form.controls['description'].touched && form.controls['description'].invalid">
+        <small *ngIf="form.controls['description'].hasError('required')">Required Field.</small>
+        <small *ngIf="form.controls['description'].hasError('minlength')">
+          Description should be atleast 10 charcaters long.</small>
+        <small *ngIf="form.controls['description'].hasError('maxlength')">
+          Description cannot exceed 200 charcaters.</small>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <label>
+        <h4>Accessible screens:</h4>
+      </label>
+
+      <div class="form-control">
+        <div class="row">
+          <div class="custom-control custom-checkbox col-md-3" *ngFor="let screen of form.controls['screens'].controls; let i=index">
+            <input type="checkbox" class="custom-control-input" id="{{screen.controls['name'].value}}" [formControl]="screen.controls['access']">
+            <label class="custom-control-label" for="{{screen.controls['name'].value}}">{{screen.controls['name'].value}}</label>
+          </div>
+        </div>
+      </div>
+
+      <span class="form-control-feedback invalid-feedback d-block" *ngIf="form.controls['screens'].invalid">
+        <small>Access to one screen is required for a valid role.</small>
+      </span>
+
+    </div>
+
+    <button class="btn btn-success" type="submit" [disabled]="!form.valid">Add Role</button>
+  </form>
+</div>
