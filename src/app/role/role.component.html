@@ -5,7 +5,7 @@
     <br>
     <div class="form-group">
       <label for="rolename">
-        <h4>Role Name</h4>
+        <h5>Role Name</h5>
       </label>
       <input type="text" formControlName="rolename" class="form-control form-control-lg" [ngClass]="{
         'is-invalid': form.controls['rolename'].invalid && (form.controls['rolename'].dirty || form.controls['rolename'].touched),
@@ -22,7 +22,7 @@
 
     <div class="form-group">
       <label for="description">
-        <h4>Description</h4>
+        <h5>Description</h5>
       </label>
       <textarea rows="2" cols="50" formControlName="description" id="description" type="text" class="form-control" [ngClass]="{
         'is-invalid': form.controls['description'].invalid && (form.controls['description'].dirty || form.controls['description'].touched),
@@ -41,7 +41,7 @@
 
     <div class="form-group">
       <label>
-        <h4>Accessible screens:</h4>
+        <h5>Accessible screens:</h5>
       </label>
 
       <div class="form-control">

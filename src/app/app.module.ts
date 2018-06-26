@@ -8,6 +8,13 @@ import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownService } from './dropdown.service';
 import { RoleComponent } from './role/role.component';
+import { Routes, RouterModule } from '@angular/router';
+
+const appRoutes : Routes = [
+  { path : '', component : UsersComponent},
+  { path : 'role', component : RoleComponent},
+  { path : '**', component : UsersComponent}
+]
 
 @NgModule({
   declarations: [
@@ -19,7 +26,8 @@ import { RoleComponent } from './role/role.component';
     BrowserModule,
     HttpModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [ DropdownService],
   bootstrap: [AppComponent]
