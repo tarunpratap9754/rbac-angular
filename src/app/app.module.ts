@@ -13,7 +13,7 @@ import { Routes, RouterModule } from '@angular/router';
 const appRoutes : Routes = [
   { path : '', component : UsersComponent},
   { path : 'role', component : RoleComponent},
-  { path : '**', component : UsersComponent}
+  { path : '**', redirectTo: '', pathMatch: 'full' }
 ]
 
 @NgModule({
