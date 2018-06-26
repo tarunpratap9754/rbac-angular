@@ -7,14 +7,12 @@ import { UsersComponent } from './users/users.component';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownService } from './dropdown.service';
-import { RolesComponent } from './roles/roles.component';
 import { RoleComponent } from './role/role.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UsersComponent,
-    RolesComponent,
     RoleComponent
   ],
   imports: [
