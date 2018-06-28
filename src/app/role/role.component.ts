@@ -14,14 +14,14 @@ export class RoleComponent implements OnInit {
 
   pages: Page[] = []
 
-  constructor(private roleService : RoleService, private pageProvider : PageProvider) {
-    
-   }
+  constructor(private roleService: RoleService, private pageProvider: PageProvider) {
+
+  }
 
   rolename
 
   ngOnInit() {
-    
+    this.newForm();
   }
 
   buildScreens() {
@@ -33,49 +33,49 @@ export class RoleComponent implements OnInit {
         access: new FormControl(false)
       })
     });
-    return new FormArray(arr,[this.checkOne]);
+    return new FormArray(arr, [this.checkOne]);
   }
 
-  form = new FormGroup({
+  form
+  newForm(){
+    this.form = new FormGroup({
     rolename: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]),
     description: new FormControl('This role describes a Client.', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
     screens: this.buildScreens()
-  });
+  });}
 
   checkOne(control: FormArray) {
     var input = control.value
-    for (var i = 0; i < control.length; i++){
+    for (var i = 0; i < control.length; i++) {
       var status = status || input[i].access
     }
-    if(status == false){
+    if (status == false) {
       return {
         checkList: {
           checkOne: status
         }
       }
     }
-    else{
+    else {
       return null
     }
   }
 
   addRole(form) {
     var arr = [];
-    var scr =[];
+    var scr = [];
 
-    for(let obj of this.form.value.screens){
-      if(obj.access === true){
+    for (let obj of this.form.value.screens) {
+      if (obj.access === true) {
         arr.push(obj.name)
       }
     }
 
-    var roleName
-
-    for(let page of this.pages){
-      for(let a of arr){
-      if(page.description === a){
-        scr.push(page.pagename)
-      }
+    for (let page of this.pages) {
+      for (let a of arr) {
+        if (page.description === a) {
+          scr.push(page.pagename)
+        }
       }
     }
 
@@ -88,6 +88,8 @@ export class RoleComponent implements OnInit {
     this.roleService.addRole(newRole)
       .subscribe();
 
+      
+    this.newForm();
 
     console.log(newRole);
   }
