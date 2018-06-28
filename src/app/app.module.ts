@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 
-
+import { PageProvider } from './page-provider';
 import { AppComponent } from './app.component';
 import { UsersComponent } from './users/users.component';
 import { HttpModule } from '@angular/http';
@@ -16,6 +16,10 @@ const appRoutes : Routes = [
   { path : '**', redirectTo: '', pathMatch: 'full' }
 ]
 
+export function pageProviderFactory(provider: PageProvider) {
+  return () => provider.load();
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +33,9 @@ const appRoutes : Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ DropdownService],
+  providers: [ DropdownService, PageProvider, 
+    { provide: APP_INITIALIZER, useFactory: pageProviderFactory, deps: [PageProvider], multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

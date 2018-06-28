@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Role } from '../role';
 import { FormArray, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { RoleService } from '../role.service';
+import { PageProvider } from '../page-provider';
+import { Page } from '../page';
 
 @Component({
   selector: 'app-role',
@@ -10,99 +12,84 @@ import { RoleService } from '../role.service';
 })
 export class RoleComponent implements OnInit {
 
-  constructor(private roleService : RoleService) { }
+  pages: Page[] = []
+
+  constructor(private roleService: RoleService, private pageProvider: PageProvider) {
+
+  }
 
   rolename
 
-  pages = [
-    {
-      "name": "Page1",
-      "access": true
-    },
-    {
-      "name": "Page2",
-      "access": false
-    },
-    {
-      "name": "Page3",
-      "access": false
-    },
-    {
-      "name": "Page4",
-      "access": false
-    },
-    {
-      "name": "Page5",
-      "access": false
-    }
-  ]
-
   ngOnInit() {
-
+    this.newForm();
   }
 
   buildScreens() {
+    this.pages = this.pageProvider.getPages();
+
     const arr = this.pages.map(screen => {
       return new FormGroup({
-        name: new FormControl(screen.name),
-        access: new FormControl(screen.access)
+        name: new FormControl(screen.description),
+        access: new FormControl(false)
       })
     });
-    return new FormArray(arr,[this.checkOne]);
+    return new FormArray(arr, [this.checkOne]);
   }
 
-  form = new FormGroup({
+  form
+  newForm(){
+    this.form = new FormGroup({
     rolename: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]),
     description: new FormControl('This role describes a Client.', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
     screens: this.buildScreens()
-  });
+  });}
 
   checkOne(control: FormArray) {
     var input = control.value
-    for (var i = 0; i < control.length; i++){
+    for (var i = 0; i < control.length; i++) {
       var status = status || input[i].access
     }
-    if(status == false){
+    if (status == false) {
       return {
         checkList: {
           checkOne: status
         }
       }
     }
-    else{
+    else {
       return null
     }
   }
 
   addRole(form) {
     var arr = [];
+    var scr = [];
 
-    for(let obj of this.form.value.screens  ){
-      if(obj.access === true){
+    for (let obj of this.form.value.screens) {
+      if (obj.access === true) {
         arr.push(obj.name)
+      }
+    }
+
+    for (let page of this.pages) {
+      for (let a of arr) {
+        if (page.description === a) {
+          scr.push(page.pagename)
+        }
       }
     }
 
     const newRole: Role = {
       rolename: this.form.value.rolename,
       description: this.form.value.description,
-      pages: arr
+      pages: scr
     };
 
     this.roleService.addRole(newRole)
       .subscribe();
 
-    this.form.reset({
-      description: "This role describes a Client.",
-      rolename: "",
-      screens: [
-        { name: "Page1", access: true },
-        { name: "Page2", access: false },
-        { name: "Page3", access: false },
-        { name: "Page4", access: false },
-        { name: "Page5", access: false }
-      ]
-    })
+      
+    this.newForm();
 
     console.log(newRole);
   }
