@@ -7,8 +7,14 @@ import { UsersComponent } from './users/users.component';
 import { HttpModule } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownService } from './dropdown.service';
-import { RolesComponent } from './roles/roles.component';
 import { RoleComponent } from './role/role.component';
+import { Routes, RouterModule } from '@angular/router';
+
+const appRoutes : Routes = [
+  { path : '', component : UsersComponent},
+  { path : 'role', component : RoleComponent},
+  { path : '**', redirectTo: '', pathMatch: 'full' }
+]
 
 export function pageProviderFactory(provider: PageProvider) {
   return () => provider.load();
@@ -18,14 +24,14 @@ export function pageProviderFactory(provider: PageProvider) {
   declarations: [
     AppComponent,
     UsersComponent,
-    RolesComponent,
     RoleComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [ DropdownService, PageProvider, 
     { provide: APP_INITIALIZER, useFactory: pageProviderFactory, deps: [PageProvider], multi: true }

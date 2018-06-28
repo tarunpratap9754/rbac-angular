@@ -77,7 +77,7 @@ export class UsersComponent implements OnInit {
   };
 
   deleteUser(user, id: any) {
-    if (confirm("Are you sure to delete the entry for user " + user.firstname + "?")) {
+    if (window.confirm("Are you sure to delete the entry for user " + user.firstname + "?")) {
       var users = this.users;
       this.userService.deleteUser(id)
         .subscribe(data => {
