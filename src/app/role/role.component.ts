@@ -61,17 +61,28 @@ export class RoleComponent implements OnInit {
 
   addRole(form) {
     var arr = [];
+    var scr =[];
 
-    for(let obj of this.form.value.screens  ){
+    for(let obj of this.form.value.screens){
       if(obj.access === true){
         arr.push(obj.name)
+      }
+    }
+
+    var roleName
+
+    for(let page of this.pages){
+      for(let a of arr){
+      if(page.description === a){
+        scr.push(page.pagename)
+      }
       }
     }
 
     const newRole: Role = {
       rolename: this.form.value.rolename,
       description: this.form.value.description,
-      pages: arr
+      pages: scr
     };
 
     this.roleService.addRole(newRole)
