@@ -12,7 +12,7 @@ app.use(cors());
 
 const port = 3000;
 
-mongoose.connect('mongodb://localhost:27017/userlist');
+mongoose.connect('mongodb://tarunpratap:tarun%406068@ds237808.mlab.com:37808/userlist');
 mongoose.connection.on('connected', function(){
     console.log("Connected to mongodb.");
 });
