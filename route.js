@@ -5,7 +5,6 @@ const User = require('./models/user');
 
 const Countries = require('./models/countries');
 const Role = require('./models/role');
-const Page = require('./models/page');
 
 
 //GET
@@ -153,41 +152,5 @@ router.delete('/roles/:id', function (req, res, next) {
     });
 });
 
-//GET Pages
-router.get('/pages', function (req, res, next) {
-    Page.find(function (err, pages) {
-        res.json(pages);
-    })
-});
-
-//POST Page
-router.post('/pages', function (req, res, next) {
-
-    newPage = new Page({
-        pagename: req.body.pagename,
-        description: req.body.description
-    });
-
-    newPage.save(function (err, user) {
-        if (err) {
-            res.json({ message: "Failed" });
-        }
-        else {
-            res.json({ message: "Success" });
-        }
-    });
-});
-
-//DELETE Page
-router.delete('/pages/:id', function (req, res, next) {
-    Page.remove({ _id: req.params.id }, function (err, result) {
-        if (err) {
-            res.json(err);
-        }
-        else {
-            res.json(result);
-        }
-    });
-});
 
 module.exports = router;
