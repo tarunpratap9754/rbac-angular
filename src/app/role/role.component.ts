@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Role } from '../role';
 import { FormArray, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { RoleService } from '../role.service';
+import { PageProvider } from '../page-provider';
+import { Page } from '../page';
 
 @Component({
   selector: 'app-role',
@@ -10,42 +12,25 @@ import { RoleService } from '../role.service';
 })
 export class RoleComponent implements OnInit {
 
-  constructor(private roleService : RoleService) { }
+  pages: Page[] = []
+
+  constructor(private roleService : RoleService, private pageProvider : PageProvider) {
+    
+   }
 
   rolename
 
-  pages = [
-    {
-      "name": "Page1",
-      "access": true
-    },
-    {
-      "name": "Page2",
-      "access": false
-    },
-    {
-      "name": "Page3",
-      "access": false
-    },
-    {
-      "name": "Page4",
-      "access": false
-    },
-    {
-      "name": "Page5",
-      "access": false
-    }
-  ]
-
   ngOnInit() {
-
+    
   }
 
   buildScreens() {
+    this.pages = this.pageProvider.getPages();
+
     const arr = this.pages.map(screen => {
       return new FormGroup({
-        name: new FormControl(screen.name),
-        access: new FormControl(screen.access)
+        name: new FormControl(screen.description),
+        access: new FormControl(false)
       })
     });
     return new FormArray(arr,[this.checkOne]);
@@ -92,17 +77,6 @@ export class RoleComponent implements OnInit {
     this.roleService.addRole(newRole)
       .subscribe();
 
-    this.form.reset({
-      description: "This role describes a Client.",
-      rolename: "",
-      screens: [
-        { name: "Page1", access: true },
-        { name: "Page2", access: false },
-        { name: "Page3", access: false },
-        { name: "Page4", access: false },
-        { name: "Page5", access: false }
-      ]
-    })
 
     console.log(newRole);
   }

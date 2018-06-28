@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response} from '@angular/http';
 import { Role } from './role';
+import { Page } from './page';
 
 import { map } from 'rxjs/operators';
 
@@ -22,6 +23,12 @@ export class RoleService {
 
   getRoles(){
     return this.http.get('http://localhost:3000/api/roles')
+      .pipe(map(res => res.json()));
+  }
+
+
+  getPages(){
+    return this.http.get('http://localhost:3000/api/pages')
       .pipe(map(res => res.json()));
   }
 }
