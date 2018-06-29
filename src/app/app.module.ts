@@ -9,10 +9,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownService } from './dropdown.service';
 import { RoleComponent } from './role/role.component';
 import { Routes, RouterModule } from '@angular/router';
+import { MockViewComponent } from './mock-view/mock-view.component';
 
 const appRoutes : Routes = [
   { path : '', component : UsersComponent},
   { path : 'role', component : RoleComponent},
+  { path : 'view', component : MockViewComponent},
   { path : '**', redirectTo: '', pathMatch: 'full' }
 ]
 
@@ -24,7 +26,8 @@ export function pageProviderFactory(provider: PageProvider) {
   declarations: [
     AppComponent,
     UsersComponent,
-    RoleComponent
+    RoleComponent,
+    MockViewComponent
   ],
   imports: [
     BrowserModule,
