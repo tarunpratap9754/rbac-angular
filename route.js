@@ -51,7 +51,7 @@ router.post('/authenticate', (req, res, next) => {
         if(err) throw err;
 
         if(!user){
-            return res.json({ message: "User not found" });
+            return res.json({ success: false, message: "User not found" });
         }
 
         User.comparePassword(password, user.password, (err, isMatch) => {
@@ -63,6 +63,7 @@ router.post('/authenticate', (req, res, next) => {
                 });
             
             res.json({
+                success: true,
                 message: "Token generated",
                 token: 'JWT '+token,
                 user:{
@@ -70,7 +71,7 @@ router.post('/authenticate', (req, res, next) => {
                 }
             })
             } else{
-                res.json({ message: "Wrong Password" });
+                res.json({ success: false, message: "Wrong Password" });
              }
         })
     })
