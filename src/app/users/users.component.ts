@@ -56,6 +56,8 @@ export class UsersComponent implements OnInit {
       }
     }
     const newUser: User = {
+      username: form.value.username,
+      password: form.value.password,
       firstname: form.value.firstname,
       lastname: form.value.lastname,
       email: form.value.email,
@@ -144,6 +146,8 @@ export class UsersComponent implements OnInit {
 
     let newUser: User = {
       _id: this.selectedUser._id,
+      username: form.value.username,
+      password: form.value.password,
       firstname: form.value.firstname,
       lastname: form.value.lastname,
       email: form.value.email,

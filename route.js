@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -193,5 +194,9 @@ router.get('/pages', function (req, res, next) {
         res.json(pages);
     })
 });
+
+router.get('/profile', passport.authenticate('jwt', {session : false}), (req, res, next) => {
+    res.json({user: req.user});
+})
 
 module.exports = router;

@@ -4,6 +4,35 @@
     <br>
     <h2 class="page-header">New User</h2>
     <br>
+
+    <div class="form-group">
+      <label><h5>Username</h5></label>
+      <input type="text" name="username" class="form-control" [ngClass]="{
+        'is-invalid': frm.controls.username?.invalid && (frm.controls.username?.dirty || frm.controls.username?.touched),
+        'is-valid': frm.controls.username?.valid && (frm.controls.username?.dirty || frm.controls.username?.touched)
+   }" placeholder="tester123" pattern="[^\s]+" ngModel required>
+
+      <div class="form-control-feedback invalid-feedback" *ngIf="frm.controls.username?.errors && (frm.controls.username?.dirty || frm.controls.username?.touched)">
+        <small *ngIf="frm.controls.username?.errors.required">Required field.</small>
+        <small *ngIf="frm.controls.username?.errors.pattern">Spaces not allowed.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label><h5>Password</h5></label>
+      <input type="password" name="password" class="form-control" [ngClass]="{
+        'is-invalid': frm.controls.password?.invalid && (frm.controls.password?.dirty || frm.controls.password?.touched),
+        'is-valid': frm.controls.password?.valid && (frm.controls.password?.dirty || frm.controls.password?.touched)
+   }" pattern="[^\s]+" ngModel required>
+
+      <div class="form-control-feedback invalid-feedback" *ngIf="frm.controls.password?.errors && (frm.controls.password?.dirty || frm.controls.password?.touched)">
+        <small *ngIf="frm.controls.password?.errors.required">Required field.</small>
+        <small *ngIf="frm.controls.password?.errors.pattern">Spaces not allowed.</small>
+      </div>
+    </div>
+
+    <hr>
+
     <div class="form-group">
       <label><h5>First Name</h5></label>
       <input type="text" name="firstname" class="form-control" [ngClass]="{
