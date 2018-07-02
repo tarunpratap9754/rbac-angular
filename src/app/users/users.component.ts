@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsernameValidators } from '../app.validators';
 import { DropdownService } from '../dropdown.service';
 import { RoleService } from '../role.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -42,7 +43,8 @@ export class UsersComponent implements OnInit {
   constructor(
     private userService: UserService,
     private ddService: DropdownService,
-    private roleService: RoleService) { }
+    private roleService: RoleService,
+    private router: Router) { }
 
 
 
@@ -75,6 +77,7 @@ export class UsersComponent implements OnInit {
         this.userService.getUsers()
           .subscribe(users => this.users = users);
         form.reset();
+        // this.router.navigate(['/login']); //Navigate to login page on adding a user
       })
   };
 

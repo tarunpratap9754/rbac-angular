@@ -36,4 +36,29 @@ export class UserService {
     return this.http.delete('http://localhost:3000/api/users/'+id)
       .pipe(map(res => res.json()));
   }
+
+  authenticateUser(user){
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return this.http.post('http://localhost:3000/api/authenticate/', user, {headers:headers})
+      .pipe(map(res => res.json()));
+  }
+
+  authToken
+  user
+
+  storeUserData(token, user){
+    localStorage.setItem('id_token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+
+    this.authToken = token;
+    this.user = user;
+  }
+
+  logout(){
+    this.authToken = null;
+    this.user = null;
+    localStorage.clear();
+  }
 }
