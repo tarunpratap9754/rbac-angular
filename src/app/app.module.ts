@@ -10,10 +10,12 @@ import { DropdownService } from './dropdown.service';
 import { RoleComponent } from './role/role.component';
 import { Routes, RouterModule } from '@angular/router';
 import { MockViewComponent } from './mock-view/mock-view.component';
+import { LoginComponent } from './login/login.component';
 
 const appRoutes : Routes = [
   { path : '', component : UsersComponent},
   { path : 'role', component : RoleComponent},
+  { path : 'login', component : LoginComponent},
   { path : 'view', component : MockViewComponent},
   { path : '**', redirectTo: '', pathMatch: 'full' }
 ]
@@ -27,7 +29,8 @@ export function pageProviderFactory(provider: PageProvider) {
     AppComponent,
     UsersComponent,
     RoleComponent,
-    MockViewComponent
+    MockViewComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
