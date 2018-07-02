@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const User = require('./models/user');
 
@@ -15,11 +17,12 @@ router.get('/users', function (req, res, next) {
     })
 });
 
-
 //POST
 router.post('/users', function (req, res, next) {
 
     newUser = new User({
+        username: req.body.username,
+        password: req.body.password,
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
@@ -29,15 +32,46 @@ router.post('/users', function (req, res, next) {
         city: req.body.city
     });
 
-    newUser.save(function (err, user) {
-        if (err) {
+    User.addUser(newUser, (err, user) => {
+        if(err){
             res.json({ message: "Failed" });
-        }
-        else {
+        }else{
             res.json({ message: "Success" });
         }
-    });
+
+    })
 });
+
+router.post('/authenticate', (req, res, next) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    User.getUserByUsername(username, (err, user) => {
+        if(err) throw err;
+        if(!user){
+            res.json({ message: "User not found" });
+        }
+
+        User.comparePassword(password, user.password, (err, isMatch) => {
+            if(err) throw err;
+            if(isMatch){
+                const token = jwt.sign(user.toJSON(), 'testwid', {
+                    expiresIn: 604800
+                });
+            
+            res.json({
+                message: "Token generated",
+                token: 'JWT '+token,
+                user:{
+                    name: user.username
+                }
+            })
+            } else{
+                res.json({ message: "Wrong Password" });
+             }
+        })
+    })
+})
 
 //PUT
 router.put('/users/:id', function (req, res, next) {
