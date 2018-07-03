@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mock-view',
@@ -7,9 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MockViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) { }
+
+  user 
 
   ngOnInit() {
-  }
+    this.userService.getProfile()
+      .subscribe(profile => {
+        console.log(profile);
+        this.user = profile.user;
+  },
+  err => {
+    console.log(err);
+    return false
+  });            
 
+}
 }
