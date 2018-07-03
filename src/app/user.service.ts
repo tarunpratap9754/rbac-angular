@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response} from '@angular/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from './user';
 
 import { map } from 'rxjs/operators';
@@ -9,7 +10,9 @@ import { map } from 'rxjs/operators';
 })
 export class UserService {
 
-  constructor(private http: Http) { }
+  constructor(
+    private http: Http,
+    public jwtHelper: JwtHelperService) { }
 
   getUsers(){
     return this.http.get('http://localhost:3000/api/users')
@@ -69,6 +72,10 @@ export class UserService {
   loadToken(){
     const token = localStorage.getItem('id_token');
     this.authToken = token;
+  }
+
+  loggedIn(){
+    return this.jwtHelper.isTokenExpired();
   }
 
   logout(){

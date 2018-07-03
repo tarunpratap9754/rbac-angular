@@ -15,16 +15,16 @@
             <li routerLinkActive="active" class="nav-item">
                 <a class="nav-link" routerLink="/role">Roles</a>
             </li>
-            <li routerLinkActive="active" class="nav-item">
+            <li *ngIf="!userService.loggedIn()" routerLinkActive="active" class="nav-item">
                 <a class="nav-link" routerLink="/view">View</a>
             </li>
         </ul>
 
         <ul class="navbar-nav navbar-right">
-            <li routerLinkActive="active" class="nav-item">
+            <li *ngIf="userService.loggedIn()" routerLinkActive="active" class="nav-item">
                 <a class="nav-link" routerLink="/login">Login</a>
             </li>
-            <li class="nav-item">
+            <li *ngIf="!userService.loggedIn()" class="nav-item">
                 <a class="nav-link" (click)="onLogoutClick()" href="#">Logout</a>
             </li>
         </ul>

@@ -11,6 +11,11 @@ import { RoleComponent } from './role/role.component';
 import { Routes, RouterModule } from '@angular/router';
 import { MockViewComponent } from './mock-view/mock-view.component';
 import { LoginComponent } from './login/login.component';
+import { JwtModule } from '@auth0/angular-jwt';
+
+export function tokenGetter() {
+  return localStorage.getItem('id_token');
+}
 
 const appRoutes : Routes = [
   { path : '', component : UsersComponent},
@@ -37,7 +42,14 @@ export function pageProviderFactory(provider: PageProvider) {
     HttpModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: [''],
+        blacklistedRoutes: ['']
+      }
+    })
   ],
   providers: [ DropdownService, PageProvider, 
     { provide: APP_INITIALIZER, useFactory: pageProviderFactory, deps: [PageProvider], multi: true }
