@@ -124,8 +124,25 @@
 
   <form #editfrm="ngForm" (ngSubmit)="editUser(editfrm)" *ngIf="toggleForm" autocomplete="off">
     <br>
-    <h2 class="page-header">{{editfrm.value.firstname}} {{editfrm.value.lastname}}</h2>
+    <h2 class="page-header"><blockquote>Editing User : {{selectedUser.firstname}}</blockquote></h2>
     <br>
+
+
+    <div class="form-group">
+      <label><h5>Password</h5></label>
+      <input type="password" name="password" class="form-control" [ngClass]="{
+        'is-invalid': editfrm.controls.password?.invalid && (editfrm.controls.password?.dirty || editfrm.controls.password?.touched),
+        'is-valid': editfrm.controls.password?.valid && (editfrm.controls.password?.dirty || editfrm.controls.password?.touched)
+   }" pattern="[^\s]+" [ngModel]="selectedUser.password" (change)="onChangePassword()" required>
+
+      <div class="form-control-feedback invalid-feedback" *ngIf="editfrm.controls.password?.errors && (editfrm.controls.password?.dirty || editfrm.controls.password?.touched)">
+        <small *ngIf="editfrm.controls.password?.errors.required">Required field.</small>
+        <small *ngIf="editfrm.controls.password?.errors.pattern">Spaces not allowed.</small>
+      </div>
+    </div>
+
+    <hr>
+
     <div class="form-group">
       <label><h5>First Name</h5></label>
       <input type="text" name="firstname" class="form-control" [ngModel]="selectedUser.firstname" [ngClass]="{

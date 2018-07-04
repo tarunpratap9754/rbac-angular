@@ -46,7 +46,13 @@ export class UsersComponent implements OnInit {
     private roleService: RoleService,
     private router: Router) { }
 
+  
+  pw
 
+  onChangePassword(){
+    this.pw = true;
+    console.log("Password change status: "+this.pw)
+  }
 
   addUser(form) {
 
@@ -106,7 +112,6 @@ export class UsersComponent implements OnInit {
     if (!this.toggleForm) {
       this.selectedUser = user;
 
-      
 
       for(let role of this.roles){
         if(this.selectedUser.role === role.RoleName){
@@ -146,11 +151,9 @@ export class UsersComponent implements OnInit {
       }
     }
 
-
+    
     let newUser: User = {
       _id: this.selectedUser._id,
-      username: form.value.username,
-      password: form.value.password,
       firstname: form.value.firstname,
       lastname: form.value.lastname,
       email: form.value.email,
@@ -159,6 +162,11 @@ export class UsersComponent implements OnInit {
       state: form.value.state,
       city: form.value.city
     };
+
+    if(this.pw){
+      newUser.password = form.value.password
+      this.pw = false;
+    }
 
     console.log(newUser);
 
