@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response} from '@angular/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from './user';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 import { map } from 'rxjs/operators';
 
@@ -12,7 +13,8 @@ export class UserService {
 
   constructor(
     private http: Http,
-    public jwtHelper: JwtHelperService) { }
+    public jwtHelper: JwtHelperService,
+    private flashMessage: FlashMessagesService) { }
 
   getUsers(){
     return this.http.get('http://localhost:3000/api/users')
@@ -79,6 +81,11 @@ export class UserService {
   }
 
   logout(){
+
+    this.flashMessage.show('You have been logged out.', {
+      cssClass: 'alert-danger',
+      timeout: 1000});
+
     this.authToken = null;
     this.user = null;
     localStorage.clear();

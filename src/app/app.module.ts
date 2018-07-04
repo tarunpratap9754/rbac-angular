@@ -12,6 +12,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MockViewComponent } from './mock-view/mock-view.component';
 import { LoginComponent } from './login/login.component';
 import { JwtModule } from '@auth0/angular-jwt';
+import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
 
 export function tokenGetter() {
   return localStorage.getItem('id_token');
@@ -49,9 +50,10 @@ export function pageProviderFactory(provider: PageProvider) {
         whitelistedDomains: [''],
         blacklistedRoutes: ['']
       }
-    })
+    }),
+    FlashMessagesModule
   ],
-  providers: [ DropdownService, PageProvider, 
+  providers: [ DropdownService, PageProvider, FlashMessagesService,
     { provide: APP_INITIALIZER, useFactory: pageProviderFactory, deps: [PageProvider], multi: true }
   ],
   bootstrap: [AppComponent]

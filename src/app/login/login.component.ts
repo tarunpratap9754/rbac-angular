@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private flashMessage: FlashMessagesService
   ) { }
 
   ngOnInit() {
@@ -29,10 +31,15 @@ export class LoginComponent implements OnInit {
     this.userService.authenticateUser(user)
       .subscribe(data => {
         if(data.success){
+          this.flashMessage.show("You are now logged in!", {
+            cssClass: 'alert-success',
+            timeout: 1000});
           this.userService.storeUserData(data.token, data.user);
           this.router.navigate(['view']);
         }else{
-          console.log(data.message);
+          this.flashMessage.show(data.message, {
+            cssClass: 'alert-danger',
+            timeout: 1000});
           this.router.navigate(['login']);
         }
       })
