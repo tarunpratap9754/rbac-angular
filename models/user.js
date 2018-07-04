@@ -43,7 +43,7 @@ module.exports.getUserById = function (id, callback) {
 }
 
 module.exports.getUserByUsername = function (username, callback) {
-    User.findOne({ username: username }, callback);
+    User.findOne({ 'username': {'$regex': username, $options:'i'} }, callback);
 }
 
 module.exports.addUser = function (newUser, callback) {
