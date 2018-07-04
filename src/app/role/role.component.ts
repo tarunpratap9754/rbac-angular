@@ -5,6 +5,8 @@ import { RoleService } from '../role.service';
 import { PageProvider } from '../page-provider';
 import { Page } from '../page';
 
+import { FlashMessagesService } from 'angular2-flash-messages';
+
 @Component({
   selector: 'app-role',
   templateUrl: './role.component.html',
@@ -14,7 +16,10 @@ export class RoleComponent implements OnInit {
 
   pages: Page[] = []
 
-  constructor(private roleService: RoleService, private pageProvider: PageProvider) {
+  constructor(
+    private roleService: RoleService,
+    private pageProvider: PageProvider,
+    private flashMessage: FlashMessagesService) {
 
   }
 
@@ -37,12 +42,13 @@ export class RoleComponent implements OnInit {
   }
 
   form
-  newForm(){
+  newForm() {
     this.form = new FormGroup({
-    rolename: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]),
-    description: new FormControl('This role describes a Client.', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
-    screens: this.buildScreens()
-  });}
+      rolename: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]),
+      description: new FormControl('This role describes a Client.', [Validators.required, Validators.minLength(10), Validators.maxLength(200)]),
+      screens: this.buildScreens()
+    });
+  }
 
   checkOne(control: FormArray) {
     var input = control.value
@@ -88,7 +94,11 @@ export class RoleComponent implements OnInit {
     this.roleService.addRole(newRole)
       .subscribe();
 
-      
+    this.flashMessage.show("Role added.", {
+      cssClass: 'card text-white bg-success blockquote text-center',
+      timeout: 2000
+    });
+
     this.newForm();
 
     console.log(newRole);

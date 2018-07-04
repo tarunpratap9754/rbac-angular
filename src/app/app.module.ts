@@ -18,12 +18,12 @@ export function tokenGetter() {
   return localStorage.getItem('id_token');
 }
 
-const appRoutes : Routes = [
-  { path : '', component : UsersComponent},
-  { path : 'role', component : RoleComponent},
-  { path : 'login', component : LoginComponent},
-  { path : 'view', component : MockViewComponent},
-  { path : '**', redirectTo: '', pathMatch: 'full' }
+const appRoutes: Routes = [
+  { path: '', component: UsersComponent },
+  { path: 'role', component: RoleComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'view', component: MockViewComponent },
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ]
 
 export function pageProviderFactory(provider: PageProvider) {
@@ -53,7 +53,7 @@ export function pageProviderFactory(provider: PageProvider) {
     }),
     FlashMessagesModule
   ],
-  providers: [ DropdownService, PageProvider, FlashMessagesService,
+  providers: [DropdownService, PageProvider, FlashMessagesService,
     { provide: APP_INITIALIZER, useFactory: pageProviderFactory, deps: [PageProvider], multi: true }
   ],
   bootstrap: [AppComponent]

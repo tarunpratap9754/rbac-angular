@@ -8,6 +8,7 @@ import { UsernameValidators } from '../app.validators';
 import { DropdownService } from '../dropdown.service';
 import { RoleService } from '../role.service';
 import { Router } from '@angular/router';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 
 @Component({
@@ -44,7 +45,8 @@ export class UsersComponent implements OnInit {
     private userService: UserService,
     private ddService: DropdownService,
     private roleService: RoleService,
-    private router: Router) { }
+    private router: Router,
+    private flashMessage: FlashMessagesService) { }
 
   
   pw
@@ -82,7 +84,12 @@ export class UsersComponent implements OnInit {
         this.users.push(user);
         this.userService.getUsers()
           .subscribe(users => this.users = users);
-        form.reset();
+
+          this.flashMessage.show("User added.", {
+            cssClass: 'card text-white bg-success blockquote text-center',
+            timeout: 2000});
+          
+          form.reset();
         // this.router.navigate(['/login']); //Navigate to login page on adding a user
       })
   };
@@ -98,6 +105,9 @@ export class UsersComponent implements OnInit {
                 users.splice(i, 1);
               }
             }
+            this.flashMessage.show("User deleted.", {
+              cssClass: 'card text-white bg-danger blockquote text-center',
+              timeout: 2000});
           }
         })
       if (this.toggleForm) {
@@ -181,6 +191,10 @@ export class UsersComponent implements OnInit {
         this.sName = "State";
 
         this.states.push( { StateName: "State" } );
+
+        this.flashMessage.show("User details updated.", {
+          cssClass: 'card text-white bg-success blockquote text-center',
+          timeout: 2000});
 
         this.toggleForm = !this.toggleForm;
       });
