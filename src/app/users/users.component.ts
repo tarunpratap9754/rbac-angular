@@ -86,7 +86,7 @@ export class UsersComponent implements OnInit {
           .subscribe(users => this.users = users);
 
           this.flashMessage.show("User added.", {
-            cssClass: 'card text-white bg-success blockquote text-center',
+            cssClass: 'card text-white bg-success h5 text-center ht',
             timeout: 2000});
           
           form.reset();
@@ -106,7 +106,7 @@ export class UsersComponent implements OnInit {
               }
             }
             this.flashMessage.show("User deleted.", {
-              cssClass: 'card text-white bg-danger blockquote text-center',
+              cssClass: 'card text-white bg-danger text-center h5 ht',
               timeout: 2000});
           }
         })

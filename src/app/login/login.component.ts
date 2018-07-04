@@ -32,13 +32,13 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         if(data.success){
           this.flashMessage.show(data.message, {
-            cssClass: 'card text-white bg-success blockquote text-center',
+            cssClass: 'card text-white bg-success h5 ht text-center',
             timeout: 2000});
           this.userService.storeUserData(data.token, data.user);
           this.router.navigate(['view']);
         }else{
           this.flashMessage.show(data.message, {
-            cssClass: 'card text-white bg-danger blockquote text-center',
+            cssClass: 'card text-white bg-danger h5 ht text-center',
             timeout: 2000});
           this.router.navigate(['login']);
         }

@@ -95,7 +95,7 @@ export class RoleComponent implements OnInit {
       .subscribe();
 
     this.flashMessage.show("Role added.", {
-      cssClass: 'card text-white bg-success blockquote text-center',
+      cssClass: 'card text-white bg-success h5 ht text-center',
       timeout: 2000
     });
 

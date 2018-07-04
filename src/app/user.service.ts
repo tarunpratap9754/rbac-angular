@@ -83,7 +83,7 @@ export class UserService {
   logout(){
 
     this.flashMessage.show('You have been logged out.', {
-      cssClass: 'card text-white bg-dark blockquote text-center',
+      cssClass: 'card text-white bg-dark h5 ht text-center',
       timeout: 2000});
 
     this.authToken = null;
