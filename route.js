@@ -51,7 +51,7 @@ router.post('/authenticate', (req, res, next) => {
         if(err) throw err;
 
         if(!user){
-            return res.json({ success: false, message: "User not found" });
+            return res.json({ success: false, message: "User " + username + " does not exist." });
         }
 
         User.comparePassword(password, user.password, (err, isMatch) => {
@@ -64,10 +64,10 @@ router.post('/authenticate', (req, res, next) => {
             
             res.json({
                 success: true,
-                message: "Token generated",
+                message: "Welcome, " + username + "!",
                 token: 'JWT '+token,
                 user:{
-                    name: user.username
+                    name: user.firstname
                 }
             })
             } else{

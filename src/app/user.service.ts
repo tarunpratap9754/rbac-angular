@@ -83,8 +83,8 @@ export class UserService {
   logout(){
 
     this.flashMessage.show('You have been logged out.', {
-      cssClass: 'alert-danger',
-      timeout: 1000});
+      cssClass: 'card text-white bg-dark blockquote text-center',
+      timeout: 2000});
 
     this.authToken = null;
     this.user = null;

@@ -31,15 +31,15 @@ export class LoginComponent implements OnInit {
     this.userService.authenticateUser(user)
       .subscribe(data => {
         if(data.success){
-          this.flashMessage.show("You are now logged in!", {
-            cssClass: 'alert-success',
-            timeout: 1000});
+          this.flashMessage.show(data.message, {
+            cssClass: 'card text-white bg-success blockquote text-center',
+            timeout: 2000});
           this.userService.storeUserData(data.token, data.user);
           this.router.navigate(['view']);
         }else{
           this.flashMessage.show(data.message, {
-            cssClass: 'alert-danger',
-            timeout: 1000});
+            cssClass: 'card text-white bg-danger blockquote text-center',
+            timeout: 2000});
           this.router.navigate(['login']);
         }
       })
