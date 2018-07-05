@@ -1,0 +1,20 @@
+.navbar-custom{
+    background-color: #51A351;
+}
+
+.navbar-custom .navbar-text {
+    color: rgba(255,255,255,.8);
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color: rgba(255,255,255,.5);
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-item.active .nav-link,
+.navbar-custom .nav-item:hover .nav-link {
+    color: #ffffff;
+}
+
+.ht{
+    max-height:50px;
+}

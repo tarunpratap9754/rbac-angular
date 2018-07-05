@@ -1,0 +1,8 @@
+<div class="container" *ngIf="user">
+  <h2 class="jumbotron">Welcome, {{user.firstname}} {{user.lastname}}!</h2>
+  <ul class="list-group">
+    <li class="list-group-item">Username: {{user.username}}</li>
+    <li class="list-group-item">Email: {{user.email}}</li>
+    <li class="list-group-item">Location: {{user.city}}{{(user.city)?",":""}}{{user.state}}{{(user.state)?",":""}}{{user.country}}</li>
+  </ul>
+</div>

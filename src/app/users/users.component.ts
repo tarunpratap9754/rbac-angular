@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild  } from '@angular/core';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { Country } from '../country';
@@ -7,6 +7,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsernameValidators } from '../app.validators';
 import { DropdownService } from '../dropdown.service';
 import { RoleService } from '../role.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -16,6 +18,7 @@ import { RoleService } from '../role.service';
   providers: [UserService, DropdownService]
 })
 export class UsersComponent implements OnInit {
+
   users: User[];
   user: User;
 
@@ -42,9 +45,17 @@ export class UsersComponent implements OnInit {
   constructor(
     private userService: UserService,
     private ddService: DropdownService,
-    private roleService: RoleService) { }
+    private roleService: RoleService,
+    private router: Router,
+    private toastr: ToastrService) { }
 
+  
+  pw
 
+  onChangePassword(){
+    this.pw = true;
+    console.log("Password change status: "+this.pw)
+  }
 
   addUser(form) {
 
@@ -56,6 +67,8 @@ export class UsersComponent implements OnInit {
       }
     }
     const newUser: User = {
+      username: form.value.username,
+      password: form.value.password,
       firstname: form.value.firstname,
       lastname: form.value.lastname,
       email: form.value.email,
@@ -72,7 +85,11 @@ export class UsersComponent implements OnInit {
         this.users.push(user);
         this.userService.getUsers()
           .subscribe(users => this.users = users);
-        form.reset();
+
+        this.toastr.success("User added.", 'Success!');
+          
+          form.reset();
+        // this.router.navigate(['/login']); //Navigate to login page on adding a user
       })
   };
 
@@ -87,6 +104,7 @@ export class UsersComponent implements OnInit {
                 users.splice(i, 1);
               }
             }
+          this.toastr.info("User deleted.", 'Success!');
           }
         })
       if (this.toggleForm) {
@@ -101,7 +119,6 @@ export class UsersComponent implements OnInit {
     if (!this.toggleForm) {
       this.selectedUser = user;
 
-      
 
       for(let role of this.roles){
         if(this.selectedUser.role === role.RoleName){
@@ -141,7 +158,7 @@ export class UsersComponent implements OnInit {
       }
     }
 
-
+    
     let newUser: User = {
       _id: this.selectedUser._id,
       firstname: form.value.firstname,
@@ -152,6 +169,11 @@ export class UsersComponent implements OnInit {
       state: form.value.state,
       city: form.value.city
     };
+
+    if(this.pw){
+      newUser.password = form.value.password
+      this.pw = false;
+    }
 
     console.log(newUser);
 
@@ -166,6 +188,8 @@ export class UsersComponent implements OnInit {
         this.sName = "State";
 
         this.states.push( { StateName: "State" } );
+
+        this.toastr.success("User details updated.", this.selectedUser.username);
 
         this.toggleForm = !this.toggleForm;
       });

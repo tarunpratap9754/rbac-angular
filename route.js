@@ -1,5 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const User = require('./models/user');
 
@@ -15,11 +18,12 @@ router.get('/users', function (req, res, next) {
     })
 });
 
-
 //POST
 router.post('/users', function (req, res, next) {
 
     newUser = new User({
+        username: req.body.username,
+        password: req.body.password,
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
@@ -29,39 +33,105 @@ router.post('/users', function (req, res, next) {
         city: req.body.city
     });
 
-    newUser.save(function (err, user) {
+    User.addUser(newUser, (err, user) => {
         if (err) {
             res.json({ message: "Failed" });
-        }
-        else {
+        } else {
             res.json({ message: "Success" });
         }
-    });
+
+    })
 });
+
+router.post('/authenticate', (req, res, next) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    User.getUserByUsername(username, (err, user) => {
+        if (err) throw err;
+
+        if (!user) {
+            return res.json({ success: false, message: "User " + username + " does not exist." });
+        }
+
+        User.comparePassword(password, user.password, (err, isMatch) => {
+            if (err) throw err;
+
+            if (isMatch) {
+                const token = jwt.sign(user.toJSON(), 'testwid', {
+                    expiresIn: 604800
+                });
+
+                res.json({
+                    success: true,
+                    message: "Welcome, " + username + "!",
+                    token: 'JWT ' + token,
+                    user: {
+                        name: user.firstname
+                    }
+                })
+            } else {
+                res.json({ success: false, message: "Wrong Password" });
+            }
+        })
+    })
+})
 
 //PUT
 router.put('/users/:id', function (req, res, next) {
 
-    User.findOneAndUpdate({ _id: req.params.id },
-        {
-            $set: {
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                email: req.body.email,
-                role: req.body.role,
-                country: req.body.country,
-                state: req.body.state,
-                city: req.body.city
-            }
-        },
-        function (err, result) {
-            if (err) {
-                res.json({ message: "Failed" });
-            }
-            else {
-                res.json({ message: "Success" });
-            }
-        });
+    if (req.body.password) {
+        console.log(req.body.password);
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(req.body.password, salt, (err, hash) => {
+                if (err) throw err;
+
+                User.findOneAndUpdate({ _id: req.params.id },
+                    {
+                        $set: {
+                            password: hash,
+                            firstname: req.body.firstname,
+                            lastname: req.body.lastname,
+                            email: req.body.email,
+                            role: req.body.role,
+                            country: req.body.country,
+                            state: req.body.state,
+                            city: req.body.city
+                        }
+                    },
+                    function (err, result) {
+                        if (err) {
+                            res.json({ message: "Failed" });
+                        }
+                        else {
+                            res.json({ message: "Success" });
+                        }
+                    });
+            })
+        })
+    }
+    else {
+        User.findOneAndUpdate({ _id: req.params.id },
+            {
+                $set: {
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    email: req.body.email,
+                    role: req.body.role,
+                    country: req.body.country,
+                    state: req.body.state,
+                    city: req.body.city
+                }
+            },
+            function (err, result) {
+                if (err) {
+                    res.json({ message: "Failed" });
+                }
+                else {
+                    res.json({ message: "Success" });
+                }
+            });
+    }
 });
 
 //DELETE
@@ -159,5 +229,9 @@ router.get('/pages', function (req, res, next) {
         res.json(pages);
     })
 });
+
+router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+    res.json({ user: req.user });
+})
 
 module.exports = router;
