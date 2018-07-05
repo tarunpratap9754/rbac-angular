@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild  } from '@angular/core';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { Country } from '../country';
@@ -8,7 +8,7 @@ import { UsernameValidators } from '../app.validators';
 import { DropdownService } from '../dropdown.service';
 import { RoleService } from '../role.service';
 import { Router } from '@angular/router';
-import { FlashMessagesService } from 'angular2-flash-messages';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -18,6 +18,7 @@ import { FlashMessagesService } from 'angular2-flash-messages';
   providers: [UserService, DropdownService]
 })
 export class UsersComponent implements OnInit {
+
   users: User[];
   user: User;
 
@@ -46,7 +47,7 @@ export class UsersComponent implements OnInit {
     private ddService: DropdownService,
     private roleService: RoleService,
     private router: Router,
-    private flashMessage: FlashMessagesService) { }
+    private toastr: ToastrService) { }
 
   
   pw
@@ -85,9 +86,7 @@ export class UsersComponent implements OnInit {
         this.userService.getUsers()
           .subscribe(users => this.users = users);
 
-          this.flashMessage.show("User added.", {
-            cssClass: 'card text-white bg-success h5 text-center ht',
-            timeout: 2000});
+        this.toastr.success("User added.", 'Success!');
           
           form.reset();
         // this.router.navigate(['/login']); //Navigate to login page on adding a user
@@ -105,9 +104,7 @@ export class UsersComponent implements OnInit {
                 users.splice(i, 1);
               }
             }
-            this.flashMessage.show("User deleted.", {
-              cssClass: 'card text-white bg-danger text-center h5 ht',
-              timeout: 2000});
+          this.toastr.info("User deleted.", 'Success!');
           }
         })
       if (this.toggleForm) {
@@ -192,9 +189,7 @@ export class UsersComponent implements OnInit {
 
         this.states.push( { StateName: "State" } );
 
-        this.flashMessage.show("User details updated.", {
-          cssClass: 'card text-white bg-success blockquote text-center',
-          timeout: 2000});
+        this.toastr.success("User details updated.", this.selectedUser.username);
 
         this.toggleForm = !this.toggleForm;
       });

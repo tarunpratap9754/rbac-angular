@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { Router } from '@angular/router';
-import { FlashMessagesService } from 'angular2-flash-messages';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,7 +13,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private userService: UserService,
     private router: Router,
-    private flashMessage: FlashMessagesService
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -31,15 +30,11 @@ export class LoginComponent implements OnInit {
     this.userService.authenticateUser(user)
       .subscribe(data => {
         if(data.success){
-          this.flashMessage.show(data.message, {
-            cssClass: 'card text-white bg-success h5 ht text-center',
-            timeout: 2000});
+          this.toastr.success(data.message);
           this.userService.storeUserData(data.token, data.user);
           this.router.navigate(['view']);
         }else{
-          this.flashMessage.show(data.message, {
-            cssClass: 'card text-white bg-danger h5 ht text-center',
-            timeout: 2000});
+          this.toastr.error(data.message);
           this.router.navigate(['login']);
         }
       })

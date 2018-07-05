@@ -12,7 +12,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { MockViewComponent } from './mock-view/mock-view.component';
 import { LoginComponent } from './login/login.component';
 import { JwtModule } from '@auth0/angular-jwt';
-import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 
 export function tokenGetter() {
   return localStorage.getItem('id_token');
@@ -51,9 +53,18 @@ export function pageProviderFactory(provider: PageProvider) {
         blacklistedRoutes: ['']
       }
     }),
-    FlashMessagesModule
+    BrowserAnimationsModule, // required animations module
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-bottom-right',
+      maxOpened: 3,
+      //preventDuplicates: true,
+      //progressBar: true,
+      //progressAnimation: "increasing",
+      autoDismiss: true
+    })
   ],
-  providers: [DropdownService, PageProvider, FlashMessagesService,
+  providers: [DropdownService, PageProvider,
     { provide: APP_INITIALIZER, useFactory: pageProviderFactory, deps: [PageProvider], multi: true }
   ],
   bootstrap: [AppComponent]

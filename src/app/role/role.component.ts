@@ -4,8 +4,7 @@ import { FormArray, FormGroup, FormControl, Validators, AbstractControl, Validat
 import { RoleService } from '../role.service';
 import { PageProvider } from '../page-provider';
 import { Page } from '../page';
-
-import { FlashMessagesService } from 'angular2-flash-messages';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-role',
@@ -19,7 +18,7 @@ export class RoleComponent implements OnInit {
   constructor(
     private roleService: RoleService,
     private pageProvider: PageProvider,
-    private flashMessage: FlashMessagesService) {
+    private toastr: ToastrService) {
 
   }
 
@@ -94,10 +93,7 @@ export class RoleComponent implements OnInit {
     this.roleService.addRole(newRole)
       .subscribe();
 
-    this.flashMessage.show("Role added.", {
-      cssClass: 'card text-white bg-success h5 ht text-center',
-      timeout: 2000
-    });
+    this.toastr.success("Role added.", 'Success!');
 
     this.newForm();
 
