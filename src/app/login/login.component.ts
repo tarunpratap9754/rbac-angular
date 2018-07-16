@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
       password : form.value.password
     }
 
-    console.log(user);
 
     this.userService.authenticateUser(user)
       .subscribe(data => {

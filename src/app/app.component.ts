@@ -17,7 +17,6 @@ export class AppComponent {
 
   onLogoutClick(){
     this.userService.logout();
-    console.log("You are logged out");
     this.router.navigate(['login']);
     return false;
   }

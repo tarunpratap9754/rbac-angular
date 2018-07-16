@@ -96,7 +96,5 @@ export class RoleComponent implements OnInit {
     this.toastr.success("Role added.", 'Success!');
 
     this.newForm();
-
-    console.log(newRole);
   }
 }

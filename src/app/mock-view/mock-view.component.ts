@@ -19,11 +19,9 @@ export class MockViewComponent implements OnInit {
   ngOnInit() {
     this.userService.getProfile()
       .subscribe(profile => {
-        console.log(profile);
         this.user = profile.user;
   },
   err => {
-    console.log(err);
     return false
   });            
 

@@ -54,7 +54,6 @@ export class UsersComponent implements OnInit {
 
   onChangePassword(){
     this.pw = true;
-    console.log("Password change status: "+this.pw)
   }
 
   addUser(form) {
@@ -77,8 +76,6 @@ export class UsersComponent implements OnInit {
       state: form.value.state,
       city: form.value.city
     };
-
-    console.log(newUser);
 
     this.userService.addUser(newUser)
       .subscribe(user => {
@@ -124,7 +121,6 @@ export class UsersComponent implements OnInit {
         if(this.selectedUser.role === role.RoleName){
           this.roleDesc = role.Description
         }
-        console.log(this.roleDesc)
       }
 
       this.cName = user.country;
@@ -145,7 +141,6 @@ export class UsersComponent implements OnInit {
       this.toggleForm = !this.toggleForm;
     }
     
-    console.log(this.roles)
 
   }
 
@@ -175,7 +170,6 @@ export class UsersComponent implements OnInit {
       this.pw = false;
     }
 
-    console.log(newUser);
 
     this.userService.updateUser(newUser)
       .subscribe(user => {
@@ -200,7 +194,6 @@ export class UsersComponent implements OnInit {
   getStates() {
     this.ddService.getStates(this.cName)
       .subscribe(states => this.states = states);
-    console.log(this.states);
 
     if (this.toggleForm) {
       this.getCities();
